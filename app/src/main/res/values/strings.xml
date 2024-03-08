@@ -3,4 +3,6 @@
     <string name="activity_main_tv1">Welcome to Image Magic.</string>
     <string name="activity_main_btn1">Choose Image to edit.</string>
     <string name="activity_main_btn2">Choose Images to make a collage.</string>
+    <string name="activity_edit_iv1">Edit bitmap image view</string>
+    <string name="activity_edit_tv1">Edit Image</string>
 </resources>

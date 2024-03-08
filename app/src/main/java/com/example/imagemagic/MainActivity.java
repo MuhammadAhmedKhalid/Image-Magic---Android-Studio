@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.imagemagic.databinding.ActivityMainBinding;
 
 import java.io.IOException;
 
 import controller.MainActivityController;
+import utils.AppUtils;
 import utils.BitmapUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,18 +23,19 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainActivityController controller;
     Bitmap selectedBitmap;
+    boolean exitApp=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        controller = new MainActivityController();
+        controller = new MainActivityController(this, this);
 
         View view = binding.getRoot();
         setContentView(view);
-        binding.openGalleryButton.setOnClickListener(v -> controller.openGallery(this));
-        binding.makeCollageButton.setOnClickListener(v -> Toast.makeText(this, "Make Collage", Toast.LENGTH_SHORT).show());
+        binding.openGalleryButton.setOnClickListener(v -> controller.openGallery());
+        binding.makeCollageButton.setOnClickListener(v -> AppUtils.showToastMessage(this, "Make Collage."));
     }
 
     @Override
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri imageUri = data.getData();
                 try {
                     selectedBitmap = BitmapUtils.uriToBitmap(imageUri, this);
-                    // pass the selected bitmap to edit image screen
+                    controller.startEditActivity(selectedBitmap);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -60,4 +62,13 @@ public class MainActivity extends AppCompatActivity {
         binding = null;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (exitApp) {
+            super.onBackPressed();
+        }
+        exitApp=true;
+        AppUtils.showToastMessage(this, "Press again to exit.");
+        new Handler().postDelayed(() -> exitApp=false, 2000);
+    }
 }
