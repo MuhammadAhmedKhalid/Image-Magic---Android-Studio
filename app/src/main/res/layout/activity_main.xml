@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/appGreetings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_main_tv1"
+        android:layout_centerHorizontal="true"
+        android:textSize="28sp"
+        android:layout_marginBottom="80dp"
+        android:fontFamily="serif"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        android:layout_above="@id/buttonsLayout"/>
+
+    <RelativeLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/openGalleryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/activity_main_btn1"
+            android:padding="20dp"/>
+
+        <Button
+            android:layout_below="@id/openGalleryButton"
+            android:id="@+id/makeCollageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/activity_main_btn2"
+            android:padding="20dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
