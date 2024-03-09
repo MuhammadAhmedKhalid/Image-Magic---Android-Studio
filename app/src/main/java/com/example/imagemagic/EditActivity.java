@@ -11,6 +11,7 @@ import com.example.imagemagic.databinding.ActivityEditBinding;
 import controller.EditActivityController;
 import listener.AlertDialogListener;
 import util.AppUtil;
+import util.BitmapUtil;
 
 public class EditActivity extends AppCompatActivity implements AlertDialogListener {
 
@@ -18,6 +19,7 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     private EditActivityController controller;
     public static Bitmap editBitmap;
     boolean canGoBack=false;
+    Bitmap updatedBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +32,15 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         setContentView(view);
 
         if (editBitmap!=null) {
+            updatedBitmap=editBitmap;
             binding.editImage.setImageBitmap(editBitmap);
         }
 
         binding.back.setOnClickListener(v -> controller.backToHome());
-        binding.save.setOnClickListener(v -> AppUtil.showToastMessage(this, "Image Saved to device."));
+        binding.save.setOnClickListener(v -> {
+            BitmapUtil.saveImageToDevice(this, updatedBitmap);
+            finish();
+        });
         binding.crop.setOnClickListener(v -> AppUtil.showToastMessage(this, "Crop"));
         binding.rotate.setOnClickListener(v -> AppUtil.showToastMessage(this, "Rotate"));
         binding.border.setOnClickListener(v -> AppUtil.showToastMessage(this, "Border"));

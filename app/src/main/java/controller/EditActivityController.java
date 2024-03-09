@@ -2,9 +2,11 @@ package controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import listener.AlertDialogListener;
 import util.AlertUtil;
+import util.AppUtil;
 
 public class EditActivityController {
 
