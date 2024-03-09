@@ -6,4 +6,11 @@
     <string name="activity_edit_iv1">Edit bitmap image view</string>
     <string name="activity_edit_tv1">Edit Image</string>
     <string name="activity_edit_iv2">Go to home button.</string>
+    <string name="activity_edit_tv2">Crop</string>
+    <string name="activity_edit_tv3">Rotate</string>
+    <string name="activity_edit_tv4">Border</string>
+    <string name="activity_edit_tv5">Scene</string>
+    <string name="activity_edit_tv6">Filter</string>
+    <string name="activity_edit_tv7">Adjust</string>
+    <string name="activity_edit_tv8">Draw</string>
 </resources>

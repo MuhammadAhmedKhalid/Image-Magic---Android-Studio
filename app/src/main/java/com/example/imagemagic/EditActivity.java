@@ -10,6 +10,7 @@ import com.example.imagemagic.databinding.ActivityEditBinding;
 
 import controller.EditActivityController;
 import listener.AlertDialogListener;
+import util.AppUtil;
 
 public class EditActivity extends AppCompatActivity implements AlertDialogListener {
 
@@ -33,6 +34,14 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         }
 
         binding.back.setOnClickListener(v -> controller.backToHome());
+        binding.save.setOnClickListener(v -> AppUtil.showToastMessage(this, "Image Saved to device."));
+        binding.crop.setOnClickListener(v -> AppUtil.showToastMessage(this, "Crop"));
+        binding.rotate.setOnClickListener(v -> AppUtil.showToastMessage(this, "Rotate"));
+        binding.border.setOnClickListener(v -> AppUtil.showToastMessage(this, "Border"));
+        binding.background.setOnClickListener(v -> AppUtil.showToastMessage(this, "Background"));
+        binding.filter.setOnClickListener(v -> AppUtil.showToastMessage(this, "Filter"));
+        binding.adjust.setOnClickListener(v -> AppUtil.showToastMessage(this, "Adjust"));
+        binding.draw.setOnClickListener(v -> AppUtil.showToastMessage(this, "Draw"));
 
     }
 

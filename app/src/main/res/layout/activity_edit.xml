@@ -21,7 +21,6 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_back"
-        android:backgroundTint="@color/white"
         android:contentDescription="@string/activity_edit_iv2" />
 
     <TextView
@@ -29,7 +28,17 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/activity_edit_tv1"
+        android:textColor="@color/dirty_white"
         android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/save"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_save"/>
 
   </RelativeLayout>
 
@@ -40,5 +49,191 @@
       android:layout_centerInParent="true"
       android:layout_margin="75dp"
       android:contentDescription="@string/activity_edit_iv1" />
+
+  <HorizontalScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:padding="20dp">
+
+      <LinearLayout
+          android:id="@+id/crop"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center"
+          android:layout_alignParentStart="true"
+          android:layout_marginStart="15dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_crop"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_edit_tv2"
+            android:textColor="@color/dirty_white"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/rotate"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center"
+          android:layout_toEndOf="@id/crop"
+          android:layout_marginStart="30dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_rotate"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_edit_tv3"
+            android:textColor="@color/dirty_white"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/border"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center"
+          android:layout_toEndOf="@id/rotate"
+          android:layout_marginStart="30dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_border"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_edit_tv4"
+            android:textColor="@color/dirty_white"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/background"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center"
+          android:layout_toEndOf="@id/border"
+          android:layout_marginStart="30dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_background"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_edit_tv5"
+            android:textColor="@color/dirty_white"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center"
+          android:layout_toEndOf="@id/background"
+          android:layout_marginStart="30dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_filter"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_edit_tv6"
+            android:textColor="@color/dirty_white"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/adjust"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center"
+          android:layout_toEndOf="@id/filter"
+          android:layout_marginStart="30dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_adjust"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_edit_tv7"
+            android:textColor="@color/dirty_white"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+      </LinearLayout>
+
+
+      <LinearLayout
+          android:id="@+id/draw"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center_horizontal"
+          android:layout_toEndOf="@id/adjust"
+          android:layout_marginStart="30dp"
+          android:layout_marginEnd="15dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_draw"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_edit_tv8"
+            android:textColor="@color/dirty_white"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+      </LinearLayout>
+
+    </RelativeLayout>
+
+  </HorizontalScrollView>
 
   </RelativeLayout>
