@@ -1,9 +1,11 @@
 package com.example.imagemagic;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +17,8 @@ import com.example.imagemagic.databinding.ActivityMainBinding;
 import java.io.IOException;
 
 import controller.MainActivityController;
-import utils.AppUtils;
-import utils.BitmapUtils;
+import util.AppUtil;
+import util.BitmapUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
         View view = binding.getRoot();
         setContentView(view);
+
+        // request permissions
         binding.openGalleryButton.setOnClickListener(v -> controller.openGallery());
-        binding.makeCollageButton.setOnClickListener(v -> AppUtils.showToastMessage(this, "Make Collage."));
+        binding.makeCollageButton.setOnClickListener(v -> AppUtil.showToastMessage(this, "Make Collage."));
     }
 
     @Override
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             if (data != null && data.getData() != null) {
                 Uri imageUri = data.getData();
                 try {
-                    selectedBitmap = BitmapUtils.uriToBitmap(imageUri, this);
+                    selectedBitmap = BitmapUtil.uriToBitmap(imageUri, this);
                     controller.startEditActivity(selectedBitmap);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -55,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MainActivityController.REQUEST_PERMISSION_CODE_1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                controller.openGallery();
+            } else {
+                AppUtil.showToastMessage(this, "Permission denied.");
+            }
+        }
+        
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -68,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
         exitApp=true;
-        AppUtils.showToastMessage(this, "Press again to exit.");
+        AppUtil.showToastMessage(this, "Press again to exit.");
         new Handler().postDelayed(() -> exitApp=false, 2000);
     }
 }

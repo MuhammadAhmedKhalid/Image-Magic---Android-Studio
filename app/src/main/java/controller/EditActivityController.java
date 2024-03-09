@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import listener.AlertDialogListener;
-import utils.AlertUtils;
+import util.AlertUtil;
 
 public class EditActivityController {
 
@@ -19,7 +19,7 @@ public class EditActivityController {
     }
 
     public void backToHome() {
-        AlertUtils.showAlertDialog(context, "Confirm Exit", "Are you sure you want to exit?", "Yes", "No", listener);
+        AlertUtil.showAlertDialog(context, "Confirm Exit", "Are you sure you want to exit?", "Yes", "No", listener);
     }
 
 }

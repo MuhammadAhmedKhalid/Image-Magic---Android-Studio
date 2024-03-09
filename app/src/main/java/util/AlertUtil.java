@@ -1,11 +1,11 @@
-package utils;
+package util;
 
 import android.app.AlertDialog;
 import android.content.Context;
 
 import listener.AlertDialogListener;
 
-public class AlertUtils {
+public class AlertUtil {
 
     public static void showAlertDialog(Context context, String title, String message,
                                        String positiveButtonText, String negativeButtonText, AlertDialogListener listener) {
