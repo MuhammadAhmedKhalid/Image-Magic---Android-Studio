@@ -1,7 +1,9 @@
 package com.example.imagemagic;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     public static Uri editBitmapUri;
     boolean canGoBack=false;
     public Bitmap updatedBitmap;
+    public final int CROP_IMAGE_REQUEST = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +49,25 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
             }
         });
         binding.crop.setOnClickListener(v -> AppUtil.showToastMessage(this, "Crop"));
-        binding.rotate.setOnClickListener(v -> rotateBitmap());
+        binding.rotate.setOnClickListener(v -> AppUtil.showToastMessage(this, "Rotate"));
         binding.border.setOnClickListener(v -> AppUtil.showToastMessage(this, "Border"));
         binding.background.setOnClickListener(v -> AppUtil.showToastMessage(this, "Background"));
         binding.filter.setOnClickListener(v -> AppUtil.showToastMessage(this, "Filter"));
         binding.adjust.setOnClickListener(v -> AppUtil.showToastMessage(this, "Adjust"));
         binding.draw.setOnClickListener(v -> AppUtil.showToastMessage(this, "Draw"));
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == CROP_IMAGE_REQUEST) {
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+                updatedBitmap = extras.getParcelable("data");
+            }
+        }
 
     }
 
@@ -78,11 +94,6 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
 
     public void backToHome() {
         AlertUtil.showAlertDialog(this, "Confirm Exit", "Are you sure you want to exit?", "Yes", "No", this);
-    }
-
-    public void rotateBitmap() {
-        updatedBitmap = BitmapUtil.rotateBitmap(updatedBitmap);
-        binding.editImage.setImageBitmap(updatedBitmap);
     }
 
 }
