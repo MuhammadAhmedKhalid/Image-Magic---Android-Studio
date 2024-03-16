@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 
 import com.example.imagemagic.databinding.ActivityEditBinding;
 
@@ -47,7 +49,7 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         });
         binding.crop.setOnClickListener(v -> AppUtil.showToastMessage(this, "Crop"));
         binding.rotate.setOnClickListener(v -> rotateBitmap());
-        binding.border.setOnClickListener(v -> AppUtil.showToastMessage(this, "Border"));
+        binding.border.setOnClickListener(v -> handleBorder());
         binding.background.setOnClickListener(v -> AppUtil.showToastMessage(this, "Background"));
         binding.filter.setOnClickListener(v -> AppUtil.showToastMessage(this, "Filter"));
         binding.adjust.setOnClickListener(v -> AppUtil.showToastMessage(this, "Adjust"));
@@ -81,8 +83,41 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     }
 
     public void rotateBitmap() {
-        updatedBitmap = BitmapUtil.rotateBitmap(updatedBitmap);
-        binding.editImage.setImageBitmap(updatedBitmap);
+        if (updatedBitmap!=null) {
+            updatedBitmap = BitmapUtil.rotateBitmap(updatedBitmap);
+            binding.editImage.setImageBitmap(updatedBitmap);
+        } else {
+            AppUtil.showToastMessage(this, "No image to rotate.");
+        }
+    }
+
+    public void handleBorder() {
+        SeekBar borderSeekBar = binding.borderSeekBar;
+        if (borderSeekBar.getVisibility() == View.VISIBLE) {
+            borderSeekBar.setVisibility(View.GONE);
+        } else {
+            borderSeekBar.setVisibility(View.VISIBLE);
+            changeBitmapBorder();
+        }
+    }
+
+    public void changeBitmapBorder() {
+        binding.borderSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.d("Border", String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
 }

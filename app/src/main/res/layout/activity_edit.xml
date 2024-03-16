@@ -54,13 +54,16 @@
       app:layout_constraintEnd_toEndOf="parent"/>
 
   <SeekBar
+      android:visibility="gone"
       android:id="@+id/borderSeekBar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="10dp"
-      android:layout_marginEnd="10dp"
-      android:padding="7.5dp"
+      android:layout_height="15dp"
+      android:layout_margin="10dp"
+      android:padding="6dp"
+      android:progressDrawable="@drawable/custom_seekbar"
+      android:thumb="@drawable/custom_thumb"
       app:layout_constraintBottom_toTopOf="@id/toolBarContainer"/>
+
 
   <HorizontalScrollView
       android:id="@+id/toolBarContainer"
