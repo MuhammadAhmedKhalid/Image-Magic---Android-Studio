@@ -20,7 +20,7 @@ public class BitmapUtil {
         return MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
     }
 
-    public static void saveImageToDevice(Context context, Bitmap bitmap) {
+    public static Boolean saveImageToDevice(Context context, Bitmap bitmap) {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm ss", Locale.getDefault()).format(new Date());
         String fileName = "ImageMagic_" + timeStamp + ".jpg";
 
@@ -37,13 +37,14 @@ public class BitmapUtil {
                 OutputStream imageOutputStream = contentResolver.openOutputStream(uri);
                 if (imageOutputStream != null) {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, imageOutputStream);
-                    AppUtil.showToastMessage(context, "Image saved to device.");
                     imageOutputStream.close();
+                    return true;
                 }
             }
         } catch (Exception e) {
-            AppUtil.showToastMessage(context, "Image failed to save.");
+            return false;
         }
+        return false;
     }
 
 
