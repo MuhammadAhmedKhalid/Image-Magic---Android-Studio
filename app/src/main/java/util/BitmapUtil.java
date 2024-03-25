@@ -4,7 +4,11 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -51,7 +55,25 @@ public class BitmapUtil {
     public static Bitmap rotateBitmap(Bitmap source) {
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, false);
     }
 
+    public static Bitmap createRoundedBitmap(Bitmap bitmap, float cornerRadius) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(output);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true); // Enable anti-aliasing for smooth edges
+
+        // Create a bitmap shader
+        // A BitmapShader specifically allows you to use a bitmap as a fill pattern for shapes.
+        BitmapShader shader = new BitmapShader(bitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+        paint.setShader(shader);
+
+        RectF rect = new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint); // Draw rounded rectangle with specified corner radius
+
+        return output;
+    }
 }

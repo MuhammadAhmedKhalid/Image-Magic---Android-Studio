@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -23,21 +22,27 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     public static Uri editBitmapUri;
     boolean canGoBack=false;
     public Bitmap updatedBitmap;
+    public SeekBar borderSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (editBitmap==null) {
+            finish();
+            return;
+        }
 
         binding = ActivityEditBinding.inflate(getLayoutInflater());
 
         View view = binding.getRoot();
         setContentView(view);
 
-        if (editBitmap!=null) {
-            updatedBitmap=editBitmap;
-            binding.editImage.setImageBitmap(editBitmap);
-        }
+        updatedBitmap=editBitmap;
 
+        borderSeekBar = binding.borderSeekBar;
+
+        binding.editImage.setImageBitmap(editBitmap);
         binding.back.setOnClickListener(v -> backToHome());
         binding.save.setOnClickListener(v -> {
             if (BitmapUtil.saveImageToDevice(this, updatedBitmap)) {
@@ -84,6 +89,7 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
 
     public void rotateBitmap() {
         if (updatedBitmap!=null) {
+            borderSeekBar.setVisibility(View.GONE);
             updatedBitmap = BitmapUtil.rotateBitmap(updatedBitmap);
             binding.editImage.setImageBitmap(updatedBitmap);
         } else {
@@ -92,7 +98,6 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     }
 
     public void handleBorder() {
-        SeekBar borderSeekBar = binding.borderSeekBar;
         if (borderSeekBar.getVisibility() == View.VISIBLE) {
             borderSeekBar.setVisibility(View.GONE);
         } else {
@@ -102,21 +107,20 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     }
 
     public void changeBitmapBorder() {
+        Bitmap bitmapForAddingBorder = updatedBitmap;
         binding.borderSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.d("Border", String.valueOf(progress));
+                updatedBitmap = BitmapUtil.createRoundedBitmap(bitmapForAddingBorder, progress);
+                binding.editImage.setImageBitmap(updatedBitmap);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(SeekBar seekBar) {}
 
-            }
         });
     }
 

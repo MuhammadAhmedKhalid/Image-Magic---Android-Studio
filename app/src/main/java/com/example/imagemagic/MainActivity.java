@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     Bitmap selectedBitmap;
     Uri selectedBitmapUri;
-    boolean exitApp=false;
+    boolean exitApp = false;
     public final int PICK_IMAGE_REQUEST = 1;
     public static final int REQUEST_PERMISSION_CODE_1 = 2;
 
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         }
         
     }
-
 
     @Override
     protected void onDestroy() {
