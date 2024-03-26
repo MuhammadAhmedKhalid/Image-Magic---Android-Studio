@@ -27,13 +27,13 @@ public class BitmapUtil {
 
     public static Boolean saveImageToDevice(Context context, Bitmap bitmap) {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm ss", Locale.getDefault()).format(new Date());
-        String fileName = "ImageMagic_" + timeStamp + ".jpg";
+        String fileName = "ImageMagic_" + timeStamp + ".png";
 
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues imageDetails = new ContentValues();
         imageDetails.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
-        imageDetails.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        imageDetails.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
         imageDetails.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/ImageMagic");
 
         try {
@@ -41,7 +41,7 @@ public class BitmapUtil {
             if (uri != null) {
                 OutputStream imageOutputStream = contentResolver.openOutputStream(uri);
                 if (imageOutputStream != null) {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, imageOutputStream);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutputStream);
                     imageOutputStream.close();
                     return true;
                 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
@@ -21,9 +22,11 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     private ActivityEditBinding binding;
     public static Bitmap editBitmap;
     public static Uri editBitmapUri;
-    boolean canGoBack=false;
     public Bitmap updatedBitmap;
     public SeekBar borderSeekBar;
+    Handler handler = new Handler();
+
+    boolean canGoBack=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +47,10 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         borderSeekBar = binding.borderSeekBar;
 
         binding.editImage.setImageBitmap(editBitmap);
-        binding.back.setOnClickListener(v -> backToHome());
-        binding.save.setOnClickListener(v -> {
-            if (BitmapUtil.saveImageToDevice(this, updatedBitmap)) {
-                AppUtil.showToastMessage(this, "Image saved to device.");
-                finish();
-            } else {
-                AppUtil.showToastMessage(this, "Image failed to save.");
-            }
-        });
+        binding.back.setOnClickListener(v -> handleBack());
+        binding.save.setOnClickListener(v -> handleSave());
         binding.crop.setOnClickListener(v -> AppUtil.showToastMessage(this, "Crop"));
-        binding.rotate.setOnClickListener(v -> rotateBitmap());
+        binding.rotate.setOnClickListener(v -> handleRotate());
         binding.border.setOnClickListener(v -> handleBorder());
         binding.background.setOnClickListener(v -> AppUtil.showToastMessage(this, "Background"));
         binding.filter.setOnClickListener(v -> AppUtil.showToastMessage(this, "Filter"));
@@ -62,10 +58,9 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         binding.draw.setOnClickListener(v -> AppUtil.showToastMessage(this, "Draw"));
 
         view.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            // Get the desired height for the ImageView (for example, half of the screen height)
+            // Setting the height for the ImageView (half of the screen height)
             int desiredHeight = getResources().getDisplayMetrics().heightPixels / 2;
 
-            // Set the height of the ImageView
             ViewGroup.LayoutParams layoutParams = binding.editImage.getLayoutParams();
             layoutParams.height = desiredHeight;
             binding.editImage.setLayoutParams(layoutParams);
@@ -84,7 +79,7 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         if (canGoBack){
             super.onBackPressed();
         } else {
-            backToHome();
+            handleBack();
         }
     }
 
@@ -94,11 +89,26 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         onBackPressed();
     }
 
-    public void backToHome() {
+    public void handleBack() {
         AlertUtil.showAlertDialog(this, "Confirm Exit", "Are you sure you want to exit?", "Yes", "No", this);
     }
 
-    public void rotateBitmap() {
+    public void handleSave() {
+        binding.progressBarLayout.setVisibility(View.VISIBLE);
+        new Thread(() -> {
+            final boolean isImageSaved = BitmapUtil.saveImageToDevice(this, updatedBitmap);
+            handler.post(() -> {
+                binding.progressBarLayout.setVisibility(View.GONE);
+                if (isImageSaved) {
+                    AppUtil.showToastMessage(this, "Image saved to device.");
+                } else {
+                    AppUtil.showToastMessage(this, "Image failed to save.");
+                }
+            });
+        }).start();
+    }
+
+    public void handleRotate() {
         if (updatedBitmap!=null) {
             borderSeekBar.setVisibility(View.GONE);
             updatedBitmap = BitmapUtil.rotateBitmap(updatedBitmap);

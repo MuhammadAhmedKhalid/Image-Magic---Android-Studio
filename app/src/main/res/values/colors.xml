@@ -3,6 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dirty_white">#CDCDCD</color>
+    <color name="gray">#C5C3C3</color>
+    <color name="light_gray">#E4E1E1</color>
+    <color name="loading_bg">#4DE4E1E1</color>
 
     <!-- Light mode colors -->
     <color name="light_colorPrimary">#3F51B5</color>

@@ -9,13 +9,14 @@ import androidx.core.app.ActivityCompat;
 
 public class PermissionUtil {
 
-    public static boolean checkPermissions(Context context) {
-        int permissionCheck = ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
-        return permissionCheck == PackageManager.PERMISSION_GRANTED;
+    public static boolean checkPermission(Context context) {
+        int readPermissionCheck = ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int writePermissionCheck = ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return readPermissionCheck == PackageManager.PERMISSION_GRANTED && writePermissionCheck == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void requestPermissions(Activity activity, int code) {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, code);
+    public static void requestPermission(Activity activity, int code) {
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, code);
     }
 
 }

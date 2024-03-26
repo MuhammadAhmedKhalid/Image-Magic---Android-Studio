@@ -25,9 +25,12 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     Bitmap selectedBitmap;
     Uri selectedBitmapUri;
+
     boolean exitApp = false;
+
     public final int PICK_IMAGE_REQUEST = 1;
     public static final int REQUEST_PERMISSION_CODE_1 = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        // request permissions
         binding.openGalleryButton.setOnClickListener(v -> openGallery());
         binding.makeCollageButton.setOnClickListener(v -> AppUtil.showToastMessage(this, "Make Collage."));
     }
@@ -66,12 +68,10 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == REQUEST_PERMISSION_CODE_1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openGallery();
-            } else {
-                AppUtil.showToastMessage(this, "Permission denied.");
-            }
+        if (requestCode == REQUEST_PERMISSION_CODE_1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            openGallery();
+        } else {
+            AppUtil.showToastMessage(this, "Permission denied.");
         }
         
     }
@@ -93,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openGallery() {
-        if (PermissionUtil.checkPermissions(this)) {
+        if (PermissionUtil.checkPermission(this)) {
             Intent openGallery = new Intent(Intent.ACTION_PICK);
             openGallery.setType("image/*");
             this.startActivityForResult(openGallery, PICK_IMAGE_REQUEST);
         } else {
-            PermissionUtil.requestPermissions(this, REQUEST_PERMISSION_CODE_1);
+            PermissionUtil.requestPermission(this, REQUEST_PERMISSION_CODE_1);
         }
     }
 
