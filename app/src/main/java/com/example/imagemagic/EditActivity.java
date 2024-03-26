@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.example.imagemagic.databinding.ActivityEditBinding;
@@ -59,6 +60,16 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         binding.filter.setOnClickListener(v -> AppUtil.showToastMessage(this, "Filter"));
         binding.adjust.setOnClickListener(v -> AppUtil.showToastMessage(this, "Adjust"));
         binding.draw.setOnClickListener(v -> AppUtil.showToastMessage(this, "Draw"));
+
+        view.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            // Get the desired height for the ImageView (for example, half of the screen height)
+            int desiredHeight = getResources().getDisplayMetrics().heightPixels / 2;
+
+            // Set the height of the ImageView
+            ViewGroup.LayoutParams layoutParams = binding.editImage.getLayoutParams();
+            layoutParams.height = desiredHeight;
+            binding.editImage.setLayoutParams(layoutParams);
+        });
 
     }
 
