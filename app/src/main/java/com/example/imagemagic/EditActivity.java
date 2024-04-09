@@ -52,7 +52,7 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         binding.crop.setOnClickListener(v -> AppUtil.showToastMessage(this, "Crop"));
         binding.rotate.setOnClickListener(v -> handleRotate());
         binding.border.setOnClickListener(v -> handleBorder());
-        binding.background.setOnClickListener(v -> AppUtil.showToastMessage(this, "Background"));
+        binding.background.setOnClickListener(v -> handleBackground());
         binding.filter.setOnClickListener(v -> AppUtil.showToastMessage(this, "Filter"));
         binding.adjust.setOnClickListener(v -> AppUtil.showToastMessage(this, "Adjust"));
         binding.draw.setOnClickListener(v -> AppUtil.showToastMessage(this, "Draw"));
@@ -124,6 +124,17 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         } else {
             borderSeekBar.setVisibility(View.VISIBLE);
             changeBitmapBorder();
+        }
+    }
+
+    public void handleBackground() {
+        if (borderSeekBar.getVisibility() == View.VISIBLE) {
+            borderSeekBar.setVisibility(View.GONE);
+        }
+        Bitmap bitmapWithBg = BitmapUtil.addBackgroundToBitmap(updatedBitmap);
+        if (bitmapWithBg != null) {
+            updatedBitmap = bitmapWithBg;
+            binding.editImage.setImageBitmap(updatedBitmap);
         }
     }
 
