@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.openGalleryButton.setOnClickListener(v -> openGallery());
         binding.makeCollageButton.setOnClickListener(v -> AppUtil.showToastMessage(this, "Make Collage."));
+        binding.settings.setOnClickListener(v -> AppUtil.showToastMessage(this, "Settings."));
     }
 
     @Override

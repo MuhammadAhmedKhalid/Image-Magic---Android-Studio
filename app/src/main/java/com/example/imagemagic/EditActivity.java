@@ -3,6 +3,7 @@ package com.example.imagemagic;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,10 +24,12 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     public static Bitmap editBitmap;
     public static Uri editBitmapUri;
     public Bitmap updatedBitmap;
+    public Bitmap visibleBitmap;
     public SeekBar borderSeekBar;
     Handler handler = new Handler();
-
     boolean canGoBack=false;
+    int backgroundColor = Color.WHITE;
+    int borderRadius = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +45,22 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         View view = binding.getRoot();
         setContentView(view);
 
-        updatedBitmap=editBitmap;
+        updatedBitmap = editBitmap;
+        visibleBitmap = BitmapUtil.addBackgroundToBitmap(editBitmap, backgroundColor);
 
         borderSeekBar = binding.borderSeekBar;
 
-        binding.editImage.setImageBitmap(editBitmap);
+        binding.editImage.setImageBitmap(visibleBitmap);
         binding.back.setOnClickListener(v -> handleBack());
         binding.save.setOnClickListener(v -> handleSave());
         binding.crop.setOnClickListener(v -> AppUtil.showToastMessage(this, "Crop"));
         binding.rotate.setOnClickListener(v -> handleRotate());
         binding.border.setOnClickListener(v -> handleBorder());
+
         binding.background.setOnClickListener(v -> handleBackground());
+            binding.blackBackground.setOnClickListener(v -> handleBlackBackground());
+            binding.whiteBackground.setOnClickListener(v -> handleWhiteBackground());
+
         binding.filter.setOnClickListener(v -> AppUtil.showToastMessage(this, "Filter"));
         binding.adjust.setOnClickListener(v -> AppUtil.showToastMessage(this, "Adjust"));
         binding.draw.setOnClickListener(v -> AppUtil.showToastMessage(this, "Draw"));
@@ -79,7 +87,12 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         if (canGoBack){
             super.onBackPressed();
         } else {
-            handleBack();
+            if (binding.backgroundBar.getVisibility() == View.VISIBLE) {
+                binding.backgroundBar.setVisibility(View.GONE);
+                binding.toolBarContainer.setVisibility(View.VISIBLE);
+            } else {
+                handleBack();
+            }
         }
     }
 
@@ -96,7 +109,7 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
     public void handleSave() {
         binding.progressBarLayout.setVisibility(View.VISIBLE);
         new Thread(() -> {
-            final boolean isImageSaved = BitmapUtil.saveImageToDevice(this, updatedBitmap);
+            final boolean isImageSaved = BitmapUtil.saveImageToDevice(this, BitmapUtil.drawableToBitmap(binding.editImage.getDrawable()));
             handler.post(() -> {
                 binding.progressBarLayout.setVisibility(View.GONE);
                 if (isImageSaved) {
@@ -112,7 +125,9 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         if (updatedBitmap!=null) {
             borderSeekBar.setVisibility(View.GONE);
             updatedBitmap = BitmapUtil.rotateBitmap(updatedBitmap);
-            binding.editImage.setImageBitmap(updatedBitmap);
+            visibleBitmap = BitmapUtil.addBackgroundToBitmap(updatedBitmap, backgroundColor);
+            visibleBitmap = BitmapUtil.createRoundedBitmap(visibleBitmap, borderRadius);
+            binding.editImage.setImageBitmap(visibleBitmap);
         } else {
             AppUtil.showToastMessage(this, "No image to rotate.");
         }
@@ -131,20 +146,33 @@ public class EditActivity extends AppCompatActivity implements AlertDialogListen
         if (borderSeekBar.getVisibility() == View.VISIBLE) {
             borderSeekBar.setVisibility(View.GONE);
         }
-        Bitmap bitmapWithBg = BitmapUtil.addBackgroundToBitmap(updatedBitmap);
-        if (bitmapWithBg != null) {
-            updatedBitmap = bitmapWithBg;
-            binding.editImage.setImageBitmap(updatedBitmap);
-        }
+        binding.toolBarContainer.setVisibility(View.GONE);
+        binding.backgroundBar.setVisibility(View.VISIBLE);
+    }
+
+    public void handleBlackBackground() {
+        backgroundColor = Color.BLACK;
+        visibleBitmap = BitmapUtil.addBackgroundToBitmap(updatedBitmap, backgroundColor);
+        visibleBitmap = BitmapUtil.createRoundedBitmap(visibleBitmap, borderRadius);
+        binding.editImage.setImageBitmap(visibleBitmap);
+    }
+
+    public void handleWhiteBackground() {
+        backgroundColor = Color.WHITE;
+        visibleBitmap = BitmapUtil.addBackgroundToBitmap(updatedBitmap, backgroundColor);
+        visibleBitmap = BitmapUtil.createRoundedBitmap(visibleBitmap, borderRadius);
+        binding.editImage.setImageBitmap(visibleBitmap);
     }
 
     public void changeBitmapBorder() {
-        Bitmap bitmapForAddingBorder = updatedBitmap;
         binding.borderSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updatedBitmap = BitmapUtil.createRoundedBitmap(bitmapForAddingBorder, progress);
-                binding.editImage.setImageBitmap(updatedBitmap);
+                visibleBitmap = BitmapUtil.addBackgroundToBitmap(updatedBitmap, backgroundColor);
+                visibleBitmap = BitmapUtil.createRoundedBitmap(visibleBitmap, progress);
+                binding.editImage.setImageBitmap(visibleBitmap);
+                borderRadius = progress;
+                binding.borderSeekBar.setProgress(borderRadius);
             }
 
             @Override

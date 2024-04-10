@@ -6,11 +6,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,8 +23,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class BitmapUtil {
-
-    private static final int MAX_BITMAP_SIZE = 2000;
 
     public static Bitmap uriToBitmap(Uri imageUri, Context context) throws IOException {
         return MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
@@ -81,30 +80,20 @@ public class BitmapUtil {
         return output;
     }
 
-    public static Bitmap addBackgroundToBitmap(Bitmap originalBitmap) {
+    public static Bitmap addBackgroundToBitmap(Bitmap originalBitmap, int color) {
         int width = originalBitmap.getWidth();
         int height = originalBitmap.getHeight();
 
-        int margin = 50;
+        int margin = 150;
 
-        long newWidth = (long) width + 2 * (long) margin;
-        long newHeight = (long) height + 2 * (long) margin;
+        int newWidth =  width + 2 *  margin;
+        int newHeight =  height + 2 *  margin;
 
-        // Check if the calculated bitmap size exceeds the maximum supported size
-        if (newWidth > MAX_BITMAP_SIZE || newHeight > MAX_BITMAP_SIZE) {
-            return null; // Return null if the bitmap size is too large
-        }
+        Bitmap newBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 
-        Bitmap newBitmap;
-        try {
-            newBitmap = Bitmap.createBitmap((int) newWidth, (int) newHeight, Bitmap.Config.ARGB_8888);
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace();
-            return null; // Return null if bitmap creation failed due to memory error
-        }
 
         Canvas canvas = new Canvas(newBitmap);
-        canvas.drawColor(Color.WHITE);
+        canvas.drawColor(color);
 
         int right = margin + width;
         int bottom = margin + height;
@@ -113,5 +102,25 @@ public class BitmapUtil {
 
         return newBitmap;
     }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+
+        // Create a Bitmap of the appropriate format to hold the drawable
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        // Create a Canvas to draw the drawable onto the Bitmap
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
 
 }

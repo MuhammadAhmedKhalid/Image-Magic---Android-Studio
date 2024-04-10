@@ -13,4 +13,7 @@
     <string name="activity_edit_tv6">Filter</string>
     <string name="activity_edit_tv7">Adjust</string>
     <string name="activity_edit_tv8">Draw</string>
+    <string name="activity_edit_tv9">None</string>
+    <string name="activity_edit_tv10">Black</string>
+    <string name="activity_edit_tv11">White</string>
 </resources>
